@@ -1,14 +1,20 @@
 package com.senla.entity;
 
 public class Client {
-    private final String name;
     private static int id;
-    public Client(){
+    private final String name;
+
+    public Client() {
         id++;
         name = "Client №" + id;
     }
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString(){
+        return "\nName: " + name;
     }
 }

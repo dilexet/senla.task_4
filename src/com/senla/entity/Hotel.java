@@ -7,12 +7,12 @@ public class Hotel {
     private final ArrayList<Room> rooms;
     private final ArrayList<Service> services;
 
-    private Hotel(){
+    private Hotel() {
         rooms = new ArrayList<>();
         services = new ArrayList<>();
     }
 
-    public static Hotel getHotel(){
+    public static Hotel getHotel() {
         if (hotel == null) {
             hotel = new Hotel();
         }
