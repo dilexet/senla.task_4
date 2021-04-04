@@ -13,10 +13,10 @@ public class Administrator {
         this.hotel = hotel;
     }
 
-    public String checkInRoom(Client client) throws Exception {
+    public String checkInRoom(Client client) {
         var room = hotel.getRooms().stream().filter(r -> r.getStatus() == Status.FREE && r.getClient() == null).findFirst();
         if (room.isEmpty()) {
-            throw new Exception("No free room");
+            return "No free room";
         } else {
             room.get().setStatus(Status.BUSY);
             room.get().setClient(client);
@@ -24,10 +24,10 @@ public class Administrator {
         }
     }
 
-    public String checkOutRoom(int number) throws Exception {
+    public String checkOutRoom(int number) {
         var room = hotel.getRooms().stream().filter(r -> r.getStatus() == Status.BUSY && r.getNumber() == number).findFirst();
         if (room.isEmpty()) {
-            throw new Exception("Room not found");
+            return "Room not found";
         } else {
             room.get().setStatus(Status.FREE);
             room.get().setClient(null);
@@ -35,10 +35,10 @@ public class Administrator {
         }
     }
 
-    public String changeRoomStatus(int number, Status status) throws Exception {
+    public String changeRoomStatus(int number, Status status) {
         var room = hotel.getRooms().stream().filter(r -> r.getNumber() == number).findFirst();
         if (room.isEmpty()) {
-            throw new Exception("No free room");
+            return "No free room";
         } else {
             room.get().setStatus(status);
             return "The room is under maintenance";
@@ -48,7 +48,7 @@ public class Administrator {
     public String changePriceRoom(int number, double price) throws Exception {
         var room = hotel.getRooms().stream().filter(r -> r.getNumber() == number).findFirst();
         if (room.isEmpty()) {
-            throw new Exception("Room not found");
+            return "Room not found";
         } else {
             room.get().setPrice(price);
             return "The cost of room number " + room.get().getNumber() + " has been changed to " + room.get().getPrice() + "$";
@@ -58,7 +58,7 @@ public class Administrator {
     public String changePriceService(String serviceName, double price) throws Exception {
         var service = hotel.getServices().stream().filter(r -> r.getServiceName().equals(serviceName)).findFirst();
         if (service.isEmpty()) {
-            throw new Exception("Service not found");
+            return "Service not found";
         } else {
             service.get().setPrice(price);
             return "The cost of the " + service.get().getServiceName() + " service has been changed to " + service.get().getPrice() + "$";
@@ -68,7 +68,7 @@ public class Administrator {
     public String addRoom(int number, double price) throws Exception {
         var room = hotel.getRooms().stream().filter(r -> r.getNumber() == number).findFirst();
         if (room.isPresent()) {
-            throw new Exception("A room with the same number already exists");
+           return "A room with the same number already exists";
         } else {
             hotel.getRooms().add(new Room(number, price));
             return "Room " + number + " added successfully";
@@ -78,7 +78,7 @@ public class Administrator {
     public String addService(String serviceName, double price) throws Exception {
         var service = hotel.getServices().stream().filter(r -> r.getServiceName().equals(serviceName)).findFirst();
         if (service.isPresent()) {
-            throw new Exception("A service with this name already exists");
+            return "A service with this name already exists";
         } else {
             hotel.getServices().add(new Service(serviceName, price));
             return "Service " + serviceName + " added successfully";
