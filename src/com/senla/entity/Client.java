@@ -9,6 +9,11 @@ public class Client {
         name = "Client №" + id;
     }
 
+    public Client(String name) {
+        id++;
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

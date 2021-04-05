@@ -30,10 +30,6 @@ public class RoomDTO {
         this.clientName = clientName;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public int getNumber() {
         return number;
     }
