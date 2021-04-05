@@ -8,13 +8,19 @@ import com.senla.filetools.IParserCSV;
 import java.util.ArrayList;
 
 public class ParserCSV implements IParserCSV {
+    private final char csvSplitBy;
+
+    public ParserCSV(char csvSplitBy){
+        this.csvSplitBy = csvSplitBy;
+    }
+
     @Override
-    public ArrayList<RoomDTO> parseFileRooms(String fileData, char cvsSplitBy) {
+    public ArrayList<RoomDTO> parseFileRooms(String fileData) {
         String[] lines = fileData.split("\n");
         ArrayList<RoomDTO> roomsDTO = new ArrayList<>();
         for (int i = 1; i < lines.length; i++) {
             if (!lines[i].equals("")) {
-                String[] values = lines[i].split(String.valueOf(cvsSplitBy));
+                String[] values = lines[i].split(String.valueOf(csvSplitBy));
                 roomsDTO.add(convertToRoomDTO(values));
             }
         }
@@ -22,12 +28,12 @@ public class ParserCSV implements IParserCSV {
     }
 
     @Override
-    public ArrayList<ServiceDTO> parseFileServices(String fileData, char cvsSplitBy) {
+    public ArrayList<ServiceDTO> parseFileServices(String fileData) {
         String[] lines = fileData.split("\n");
         ArrayList<ServiceDTO> servicesDTO = new ArrayList<>();
         for (int i = 1; i < lines.length; i++) {
             if (!lines[i].equals("")) {
-                String[] values = lines[i].split(String.valueOf(cvsSplitBy));
+                String[] values = lines[i].split(String.valueOf(csvSplitBy));
                 servicesDTO.add(convertToServiceDTO(values));
             }
         }

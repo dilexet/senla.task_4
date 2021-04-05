@@ -2,86 +2,47 @@ package com.senla.manager;
 
 import com.senla.entity.Client;
 import com.senla.entity.Hotel;
-import com.senla.entity.Room;
-import com.senla.entity.Service;
 import com.senla.enums.Status;
+import com.senla.service.RoomManagement;
+import com.senla.service.ServiceManagement;
 
 public class Administrator {
     private final Hotel hotel;
+    private final RoomManagement roomManagement;
+    private final ServiceManagement serviceManagement;
 
-    public Administrator(Hotel hotel) {
+    // TODO: переделать под интерфейсы
+    public Administrator(Hotel hotel, RoomManagement roomManagement, ServiceManagement serviceManagement) {
         this.hotel = hotel;
+        this.roomManagement = roomManagement;
+        this.serviceManagement = serviceManagement;
     }
 
     public String checkInRoom(Client client) {
-        var room = hotel.getRooms().stream().filter(r -> r.getStatus() == Status.FREE && r.getClient() == null).findFirst();
-        if (room.isEmpty()) {
-            return "No free room";
-        } else {
-            room.get().setStatus(Status.BUSY);
-            room.get().setClient(client);
-            return client.getName() + " is checked into room " + room.get().getNumber();
-        }
+        return roomManagement.checkInRoom(hotel, client);
     }
 
     public String checkOutRoom(int number) {
-        var room = hotel.getRooms().stream().filter(r -> r.getStatus() == Status.BUSY && r.getNumber() == number).findFirst();
-        if (room.isEmpty()) {
-            return "Room not found";
-        } else {
-            room.get().setStatus(Status.FREE);
-            room.get().setClient(null);
-            return "Client was evicted from room " + room.get().getNumber() + ", payable " + room.get().getPrice() + "$";
-        }
+        return roomManagement.checkOutRoom(hotel, number);
     }
 
     public String changeRoomStatus(int number, Status status) {
-        var room = hotel.getRooms().stream().filter(r -> r.getNumber() == number).findFirst();
-        if (room.isEmpty()) {
-            return "No free room";
-        } else {
-            room.get().setStatus(status);
-            return "The room is under maintenance";
-        }
+        return roomManagement.changeRoomStatus(hotel, number, status);
     }
 
     public String changePriceRoom(int number, double price) throws Exception {
-        var room = hotel.getRooms().stream().filter(r -> r.getNumber() == number).findFirst();
-        if (room.isEmpty()) {
-            return "Room not found";
-        } else {
-            room.get().setPrice(price);
-            return "The cost of room number " + room.get().getNumber() + " has been changed to " + room.get().getPrice() + "$";
-        }
+        return roomManagement.changePriceRoom(hotel, number, price);
     }
 
     public String changePriceService(String serviceName, double price) throws Exception {
-        var service = hotel.getServices().stream().filter(r -> r.getServiceName().equals(serviceName)).findFirst();
-        if (service.isEmpty()) {
-            return "Service not found";
-        } else {
-            service.get().setPrice(price);
-            return "The cost of the " + service.get().getServiceName() + " service has been changed to " + service.get().getPrice() + "$";
-        }
+        return serviceManagement.changePriceService(hotel, serviceName, price);
     }
 
     public String addRoom(int number, double price) throws Exception {
-        var room = hotel.getRooms().stream().filter(r -> r.getNumber() == number).findFirst();
-        if (room.isPresent()) {
-           return "A room with the same number already exists";
-        } else {
-            hotel.getRooms().add(new Room(number, price));
-            return "Room " + number + " added successfully";
-        }
+        return roomManagement.addRoom(hotel, number, price);
     }
 
     public String addService(String serviceName, double price) throws Exception {
-        var service = hotel.getServices().stream().filter(r -> r.getServiceName().equals(serviceName)).findFirst();
-        if (service.isPresent()) {
-            return "A service with this name already exists";
-        } else {
-            hotel.getServices().add(new Service(serviceName, price));
-            return "Service " + serviceName + " added successfully";
-        }
+       return serviceManagement.addService(hotel, serviceName, price);
     }
 }

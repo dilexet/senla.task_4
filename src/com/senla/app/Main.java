@@ -1,6 +1,5 @@
 package com.senla.app;
 
-import com.senla.dataaccessobject.RoomDTO;
 import com.senla.entity.Client;
 import com.senla.entity.Hotel;
 import com.senla.enums.Status;
@@ -8,23 +7,22 @@ import com.senla.filetools.implementation.FileStreamReader;
 import com.senla.filetools.implementation.FileStreamWriter;
 import com.senla.filetools.implementation.ParserCSV;
 import com.senla.manager.Administrator;
+import com.senla.service.RoomManagement;
+import com.senla.service.ServiceManagement;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 public class Main {
 
     public static void main(String[] args) {
         try {
-            String roomsFilePath = getProperty("roomsFilePath");
-            String servicesFilePath = getProperty("servicesFilePath");
-            char cvsSplitBy = getProperty("cvsSplitBy").charAt(1);
-
-
+            // TODO: данные должны читаться при запуске или по мере необходимости?
+            run(getProperty("roomsFilePath"), getProperty("servicesFilePath"), getProperty("cvsSplitBy").charAt(1));
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-
     }
 
     private static String getProperty(String propertyName) throws IOException {
@@ -41,9 +39,12 @@ public class Main {
         return property;
     }
 
-    private static void extracted() {
+    private static void run(String roomsFilePath, String servicesFilePath, char cvsSplitBy){
         try {
-            Administrator administrator = new Administrator(Hotel.getHotel());
+            Administrator administrator = new Administrator(
+                    Hotel.getHotel(),
+                    new RoomManagement(new ParserCSV(cvsSplitBy), new FileStreamWriter(roomsFilePath), new FileStreamReader(roomsFilePath)),
+                    new ServiceManagement(new ParserCSV(cvsSplitBy), new FileStreamWriter(servicesFilePath), new FileStreamReader(servicesFilePath)));
 
             System.out.println(administrator.addRoom(666, 333));
             System.out.println(administrator.addService("Мини-бар", 228));

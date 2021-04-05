@@ -10,8 +10,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileStreamWriter implements IFileStreamWriter {
+    private final String path;
+
+    public FileStreamWriter(String path) {
+        this.path = path;
+    }
+
     @Override
-    public void fileWrite(String path, RoomDTO roomDTO) {
+    public void fileWrite(RoomDTO roomDTO) {
         var flag = checkFile(path);
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, true))) {
             if (!flag) {
@@ -25,7 +31,7 @@ public class FileStreamWriter implements IFileStreamWriter {
     }
 
     @Override
-    public void fileWrite(String path, ServiceDTO serviceDTO) {
+    public void fileWrite(ServiceDTO serviceDTO) {
         var flag = checkFile(path);
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
             if (!flag) {
