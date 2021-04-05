@@ -18,6 +18,8 @@ public class Administrator {
         this.serviceManagement = serviceManagement;
     }
 
+    // TODO: добавить сортировки
+
     public String checkInRoom(Client client) {
         return roomManagement.checkInRoom(hotel, client);
     }
