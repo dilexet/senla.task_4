@@ -7,11 +7,7 @@ public class ServiceDTO {
 
     @Override
     public String toString() {
-        return "ServiceDTO{" +
-                "id=" + id +
-                ", serviceName='" + serviceName + '\'' +
-                ", price=" + price +
-                '}';
+        return "\n" + id + "," + serviceName + "," + price;
     }
 
     public void setId(int id) {

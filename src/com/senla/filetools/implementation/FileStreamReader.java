@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class FileStreamReader implements IFileStreamReader {
     @Override
-    public String fileReader(String path) throws IOException {
+    public String fileRead(String path) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String s;
             StringBuilder fileData = new StringBuilder();

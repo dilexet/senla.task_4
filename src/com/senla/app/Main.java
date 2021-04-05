@@ -1,9 +1,11 @@
 package com.senla.app;
 
+import com.senla.dataaccessobject.RoomDTO;
 import com.senla.entity.Client;
 import com.senla.entity.Hotel;
 import com.senla.enums.Status;
 import com.senla.filetools.implementation.FileStreamReader;
+import com.senla.filetools.implementation.FileStreamWriter;
 import com.senla.filetools.implementation.ParserCSV;
 import com.senla.manager.Administrator;
 
@@ -18,10 +20,6 @@ public class Main {
             String servicesFilePath = getProperty("servicesFilePath");
             char cvsSplitBy = getProperty("cvsSplitBy").charAt(1);
 
-
-            var textData = new FileStreamReader().fileReader(roomsFilePath);
-            var roomsObject = new ParserCSV().parseFileRooms(textData, cvsSplitBy);
-            System.out.println(roomsObject);
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());

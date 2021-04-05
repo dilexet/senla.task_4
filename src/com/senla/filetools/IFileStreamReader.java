@@ -3,5 +3,5 @@ package com.senla.filetools;
 import java.io.IOException;
 
 public interface IFileStreamReader {
-    String fileReader(String path) throws IOException;
+    String fileRead(String path) throws IOException;
 }

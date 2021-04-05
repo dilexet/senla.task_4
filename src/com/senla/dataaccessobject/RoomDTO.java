@@ -11,13 +11,7 @@ public class RoomDTO {
 
     @Override
     public String toString() {
-        return "RoomDTO{" +
-                "id=" + id +
-                ", number=" + number +
-                ", price=" + price +
-                ", status=" + status +
-                ", clientName='" + clientName + '\'' +
-                '}';
+        return "\n" + id + "," + number + "," + price + "," + clientName;
     }
 
     public void setId(int id) {
