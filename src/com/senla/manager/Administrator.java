@@ -2,23 +2,34 @@ package com.senla.manager;
 
 import com.senla.entity.Client;
 import com.senla.entity.Hotel;
+import com.senla.entity.Room;
+import com.senla.entity.Service;
 import com.senla.enums.Status;
-import com.senla.service.RoomManagement;
-import com.senla.service.ServiceManagement;
+import com.senla.service.IRoomManagement;
+import com.senla.service.IServiceManagement;
+
+import java.util.Comparator;
 
 public class Administrator {
     private final Hotel hotel;
-    private final RoomManagement roomManagement;
-    private final ServiceManagement serviceManagement;
+    private final IRoomManagement roomManagement;
+    private final IServiceManagement serviceManagement;
 
-    // TODO: переделать под интерфейсы
-    public Administrator(Hotel hotel, RoomManagement roomManagement, ServiceManagement serviceManagement) {
+    public Administrator(Hotel hotel, IRoomManagement roomManagement, IServiceManagement serviceManagement) {
         this.hotel = hotel;
         this.roomManagement = roomManagement;
         this.serviceManagement = serviceManagement;
     }
 
-    // TODO: добавить сортировки
+    // TODO: добавить работу с файлами
+    public String sortRoom(Comparator<Room> roomComparator){
+        return roomManagement.sort(hotel, roomComparator);
+    }
+
+    public String sortService(Comparator<Service> serviceComparator){
+        return serviceManagement.sort(hotel, serviceComparator);
+    }
+
 
     public String checkInRoom(Client client) {
         return roomManagement.checkInRoom(hotel, client);
@@ -45,6 +56,6 @@ public class Administrator {
     }
 
     public String addService(String serviceName, double price) throws Exception {
-       return serviceManagement.addService(hotel, serviceName, price);
+        return serviceManagement.addService(hotel, serviceName, price);
     }
 }

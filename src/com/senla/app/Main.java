@@ -1,5 +1,9 @@
 package com.senla.app;
 
+import com.senla.comparators.room.RoomClientComparator;
+import com.senla.comparators.room.RoomNumberComparator;
+import com.senla.comparators.service.ServiceNameComparator;
+import com.senla.comparators.service.ServicePriceComparator;
 import com.senla.entity.Client;
 import com.senla.entity.Hotel;
 import com.senla.enums.Status;
@@ -7,8 +11,8 @@ import com.senla.filetools.implementation.FileStreamReader;
 import com.senla.filetools.implementation.FileStreamWriter;
 import com.senla.filetools.implementation.ParserCSV;
 import com.senla.manager.Administrator;
-import com.senla.service.RoomManagement;
-import com.senla.service.ServiceManagement;
+import com.senla.service.implementation.RoomManagement;
+import com.senla.service.implementation.ServiceManagement;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -54,6 +58,9 @@ public class Main {
             System.out.println(administrator.changeRoomStatus(666, Status.FREE));
             System.out.println(administrator.checkInRoom(new Client()));
             System.out.println(administrator.checkOutRoom(666));
+
+            System.out.println(administrator.sortRoom(new RoomClientComparator().thenComparing(new RoomNumberComparator())));
+            System.out.println(administrator.sortService(new ServiceNameComparator().thenComparing(new ServicePriceComparator())));
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }

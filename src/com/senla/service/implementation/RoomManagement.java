@@ -1,4 +1,4 @@
-package com.senla.service;
+package com.senla.service.implementation;
 
 import com.senla.entity.Client;
 import com.senla.entity.Hotel;
@@ -7,8 +7,12 @@ import com.senla.enums.Status;
 import com.senla.filetools.IFileStreamReader;
 import com.senla.filetools.IFileStreamWriter;
 import com.senla.filetools.IParserCSV;
+import com.senla.service.IRoomManagement;
 
-public class RoomManagement {
+import java.util.Comparator;
+import java.util.TreeSet;
+
+public class RoomManagement implements IRoomManagement {
     private final IParserCSV parserCSV;
     private final IFileStreamWriter fileStreamWriter;
     private final IFileStreamReader fileStreamReader;
@@ -17,6 +21,12 @@ public class RoomManagement {
         this.parserCSV = parserCSV;
         this.fileStreamWriter = fileStreamWriter;
         this.fileStreamReader = fileStreamReader;
+    }
+
+    public String sort(Hotel hotel, Comparator<Room> roomComparator){
+        TreeSet<Room> roomsSorted = new TreeSet<>(roomComparator);
+        roomsSorted.addAll(hotel.getRooms());
+        return roomsSorted.toString();
     }
 
     public String checkInRoom(Hotel hotel, Client client) {

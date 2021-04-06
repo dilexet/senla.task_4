@@ -1,15 +1,26 @@
-package com.senla.service;
+package com.senla.service.implementation;
 
 import com.senla.entity.Hotel;
+import com.senla.entity.Room;
 import com.senla.entity.Service;
 import com.senla.filetools.IFileStreamReader;
 import com.senla.filetools.IFileStreamWriter;
 import com.senla.filetools.IParserCSV;
+import com.senla.service.IServiceManagement;
 
-public class ServiceManagement {
+import java.util.Comparator;
+import java.util.TreeSet;
+
+public class ServiceManagement implements IServiceManagement {
     private final IParserCSV parserCSV;
     private final IFileStreamWriter fileStreamWriter;
     private final IFileStreamReader fileStreamReader;
+
+    public String sort(Hotel hotel, Comparator<Service> serviceComparator){
+        TreeSet<Service> roomsSorted = new TreeSet<>(serviceComparator);
+        roomsSorted.addAll(hotel.getServices());
+        return roomsSorted.toString();
+    }
 
     public ServiceManagement(IParserCSV parserCSV, IFileStreamWriter fileStreamWriter, IFileStreamReader fileStreamReader) {
         this.parserCSV = parserCSV;
