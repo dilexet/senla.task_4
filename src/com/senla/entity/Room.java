@@ -41,6 +41,9 @@ public class Room {
     }
 
     public Client getClient() {
+        if(client == null){
+            client = new Client("null");
+        }
         return client;
     }
 

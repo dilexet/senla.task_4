@@ -7,18 +7,18 @@ import com.senla.entity.Room;
 import com.senla.entity.Service;
 
 public class ConvertDTO {
-    public Room convertToRoom(RoomDTO roomDTO) throws Exception {
+    public static Room convertToRoom(RoomDTO roomDTO) throws Exception {
         Room room = new Room(roomDTO.getNumber(), roomDTO.getPrice());
         room.setClient(new Client(roomDTO.getClientName()));
         room.setStatus(roomDTO.getStatus());
         return room;
     }
 
-    public Service convertToService(ServiceDTO serviceDTO) throws Exception {
+    public static Service convertToService(ServiceDTO serviceDTO) throws Exception {
         return new Service(serviceDTO.getServiceName(), serviceDTO.getPrice());
     }
 
-    public RoomDTO convertToRoomDTO(Room room){
+    public static RoomDTO convertToRoomDTO(Room room){
         RoomDTO roomDTO = new RoomDTO();
         roomDTO.setNumber(room.getNumber());
         roomDTO.setPrice(room.getPrice());
@@ -27,7 +27,7 @@ public class ConvertDTO {
         return roomDTO;
     }
 
-    public ServiceDTO convertToServiceDTO(Service service){
+    public static ServiceDTO convertToServiceDTO(Service service){
         ServiceDTO serviceDTO = new ServiceDTO();
         serviceDTO.setServiceName(service.getServiceName());
         serviceDTO.setPrice(service.getPrice());

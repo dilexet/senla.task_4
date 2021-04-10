@@ -18,9 +18,9 @@ public class ParserCSV implements IParserCSV {
     public ArrayList<RoomDTO> parseFileRooms(String fileData) {
         String[] lines = fileData.split("\n");
         ArrayList<RoomDTO> roomsDTO = new ArrayList<>();
-        for (int i = 1; i < lines.length; i++) {
-            if (!lines[i].equals("")) {
-                String[] values = lines[i].split(String.valueOf(csvSplitBy));
+        for (String line : lines) {
+            if (!line.equals("")) {
+                String[] values = line.split(String.valueOf(csvSplitBy));
                 roomsDTO.add(convertToRoomDTO(values));
             }
         }
