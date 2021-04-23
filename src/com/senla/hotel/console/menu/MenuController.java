@@ -18,11 +18,11 @@ public class MenuController {
     }
 
     public void run() {
-        builder.buildMenu(); // строит главное меню и подменю, создает действия
+        builder.buildMenu();
         navigator.setCurrentMenu(builder.getRootMenu());
         navigator.printMenu();
         Scanner scanner = new Scanner(System.in);
-        while (true) { // ожидает ввода пользователя, никогда не останавливается, пока не будет вызвано действие выхода или не возникнет ошибка
+        while (true) {
             try {
                 int choice = scanner.nextInt();
                 navigator.navigate(choice);
