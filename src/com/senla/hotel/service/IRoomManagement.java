@@ -10,11 +10,9 @@ import java.util.Comparator;
 public interface IRoomManagement {
     String sort(Comparator<Room> roomComparator) throws Exception;
 
-    String checkInRoom(Client client) throws Exception;
+    String accommodateInRoom(Client client) throws Exception;
 
     String checkOutRoom(int number) throws Exception;
-
-    String changeRoomStatus(int number, Status status) throws Exception;
 
     String changePriceRoom(RoomDTO roomDTO) throws Exception;
 

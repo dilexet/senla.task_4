@@ -28,17 +28,12 @@ public class Administrator {
         return serviceManagement.sort(serviceComparator);
     }
 
-
-    public String checkInRoom(Client client) throws Exception {
-        return roomManagement.checkInRoom(client);
+    public String accommodateInRoom(Client client) throws Exception {
+        return roomManagement.accommodateInRoom(client);
     }
 
     public String checkOutRoom(int number) throws Exception {
         return roomManagement.checkOutRoom(number);
-    }
-
-    public String changeRoomStatus(int number, Status status) throws Exception {
-        return roomManagement.changeRoomStatus(number, status);
     }
 
     public String changePriceRoom(RoomDTO roomDTO) throws Exception {

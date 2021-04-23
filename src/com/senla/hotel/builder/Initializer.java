@@ -19,9 +19,7 @@ import java.util.Comparator;
 import java.util.Properties;
 
 public class Initializer {
-
-    public void run() {
-        try {
+    public Administrator initialize() throws IOException {
             String roomsFilePath = getProperty("roomsFilePath");
             String servicesFilePath = getProperty("servicesFilePath");
             char cvsSplitBy = getProperty("cvsSplitBy").charAt(1);
@@ -40,18 +38,7 @@ public class Initializer {
 
             RoomManagement roomManagement = new RoomManagement(roomFileDAO);
             ServiceManagement serviceManagement = new ServiceManagement(serviceFIleDAO);
-
-            Administrator administrator = new Administrator(
-                    roomManagement,
-                    serviceManagement);
-
-
-            // System.out.println(administrator.sortRoom(Comparator.comparingDouble(Room::getPrice)));
-
-
-        } catch (Exception ex) {
-            System.out.println(ex.toString());
-        }
+        return new Administrator(roomManagement, serviceManagement);
     }
 
     private String getProperty(String propertyName) throws IOException {
