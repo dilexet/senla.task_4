@@ -3,10 +3,11 @@ package com.senla.hotel.entity;
 import com.senla.hotel.enums.Status;
 
 public class Room {
+    private String id;
     private final int number;
     private double price;
     private Status status;
-    private Client client;
+    private String clientId;
 
     public Room(int number, double price) throws Exception {
         this.number = number;
@@ -15,6 +16,15 @@ public class Room {
             throw new Exception("incorrect price");
         }
         this.price = price;
+    }
+
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public int getNumber() {
@@ -32,30 +42,19 @@ public class Room {
         this.price = price;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
     public void setStatus(Status status) {
         this.status = status;
     }
 
-    public Client getClient() {
-        if(client == null){
-            client = new Client("null");
-        }
-        return client;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
-    @Override
-    public String toString() {
-        return "\nNumber: " + number +
-                "\nPrice: " + price +
-                "\nStatus: " + status +
-                "\nClient: " + client.getName() + "\n";
+    public String getClientId() {
+        return clientId;
     }
 }

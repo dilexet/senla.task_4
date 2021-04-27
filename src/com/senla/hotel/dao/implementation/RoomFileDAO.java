@@ -5,10 +5,10 @@ import com.senla.hotel.entity.Room;
 import com.senla.hotel.filetools.IParserCSV;
 import com.senla.hotel.filetools.implementation.FileStreamReader;
 import com.senla.hotel.filetools.implementation.FileStreamWriter;
-import com.senla.hotel.tools.ConvertDTO;
+import com.senla.hotel.tools.Converter;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class RoomFileDAO implements IRoomDAO {
     private final IParserCSV parserCSV;
@@ -23,7 +23,8 @@ public class RoomFileDAO implements IRoomDAO {
 
     @Override
     public void save(Room room) {
-        fileStreamWriter.fileWrite(ConvertDTO.convertToWritableString(room), true);
+        room.setId(UUID.randomUUID().toString());
+        fileStreamWriter.fileWrite(Converter.convertToWritableString(room), true);
     }
 
     @Override
@@ -37,19 +38,32 @@ public class RoomFileDAO implements IRoomDAO {
         rooms.set(index, room);
         StringBuilder data = new StringBuilder();
         for (var item : rooms) {
-            data.append(ConvertDTO.convertToWritableString(item));
+            data.append(Converter.convertToWritableString(item));
         }
         fileStreamWriter.fileWrite(data.toString(), false);
     }
 
     @Override
+    public Room getById(String id) throws Exception {
+        var room = getRooms().stream().filter(r -> r.getId().equals(id)).findFirst().orElse(null);
+        if (room == null) {
+            throw new Exception("Room not found");
+        }
+        return room;
+    }
+
+    @Override
+    public String getIdByNumber(int number) throws Exception {
+        var room = getRooms().stream().filter(r -> r.getNumber() == number).findFirst().orElse(null);
+        if (room == null) {
+            throw new Exception("Room not found");
+        }
+        return room.getId();
+    }
+
+    @Override
     public List<Room> getRooms() throws Exception {
         String fileData = fileStreamReader.fileRead();
-        var roomsDTO = parserCSV.parseFileRooms(fileData);
-        List<Room> rooms = new ArrayList<>();
-        for (var room : roomsDTO) {
-            rooms.add(ConvertDTO.convertToRoom(room));
-        }
-        return rooms;
+        return parserCSV.parseFileRooms(fileData);
     }
 }

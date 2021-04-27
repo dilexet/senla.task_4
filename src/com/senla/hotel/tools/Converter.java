@@ -1,13 +1,11 @@
 package com.senla.hotel.tools;
 
-import com.senla.hotel.dto.RoomDTO;
-import com.senla.hotel.dto.ServiceDTO;
 import com.senla.hotel.entity.Client;
 import com.senla.hotel.entity.Room;
 import com.senla.hotel.entity.Service;
-import com.senla.hotel.enums.Status;
 
-public class ConvertDTO {
+public class Converter {
+    /*
     public static Room convertToRoom(RoomDTO roomDTO) throws Exception {
         Room room = new Room(roomDTO.getNumber(), roomDTO.getPrice());
         room.setClient(new Client(roomDTO.getClientName()));
@@ -22,15 +20,18 @@ public class ConvertDTO {
     public static Service convertToService(ServiceDTO serviceDTO) throws Exception {
         return new Service(serviceDTO.getServiceName(), serviceDTO.getPrice());
     }
+    */
 
     public static String convertToWritableString(Room room) {
-        RoomDTO roomDTO = new RoomDTO(room.getNumber(), room.getPrice());
-        roomDTO.setClientName(room.getClient().getName());
-        return roomDTO.toString();
+
+        return room.getId() + "," + room.getNumber() + "," + room.getPrice() + "," + room.getClientId() + "\n";
     }
 
     public static String convertToWritableString(Service service) {
-        ServiceDTO serviceDTO = new ServiceDTO(service.getServiceName(), service.getPrice());
-        return serviceDTO.toString();
+        return service.getId() + "," + service.getServiceName() + "," + service.getPrice() + "\n";
+    }
+
+    public static String convertToWritableString(Client client) {
+        return client.getId() + "," + client.getName() + "\n";
     }
 }

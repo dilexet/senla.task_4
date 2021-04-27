@@ -5,10 +5,11 @@ import com.senla.hotel.entity.Service;
 import com.senla.hotel.filetools.IParserCSV;
 import com.senla.hotel.filetools.implementation.FileStreamReader;
 import com.senla.hotel.filetools.implementation.FileStreamWriter;
-import com.senla.hotel.tools.ConvertDTO;
+import com.senla.hotel.tools.Converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ServiceFIleDAO implements IServiceDAO {
     private final IParserCSV parserCSV;
@@ -23,7 +24,8 @@ public class ServiceFIleDAO implements IServiceDAO {
 
     @Override
     public void save(Service service) {
-        fileStreamWriter.fileWrite(ConvertDTO.convertToWritableString(service), true);
+        service.setId(UUID.randomUUID().toString());
+        fileStreamWriter.fileWrite(Converter.convertToWritableString(service), true);
     }
 
     @Override
@@ -38,7 +40,7 @@ public class ServiceFIleDAO implements IServiceDAO {
         services.set(index, service);
         StringBuilder data = new StringBuilder();
         for (var item : services) {
-            data.append(ConvertDTO.convertToWritableString(item));
+            data.append(Converter.convertToWritableString(item));
         }
         fileStreamWriter.fileWrite(data.toString(), false);
     }
@@ -46,11 +48,6 @@ public class ServiceFIleDAO implements IServiceDAO {
     @Override
     public List<Service> getServices() throws Exception {
         String fileData = fileStreamReader.fileRead();
-        var servicesDTO = parserCSV.parseFileServices(fileData);
-        List<Service> services = new ArrayList<>();
-        for (var service : servicesDTO) {
-            services.add(ConvertDTO.convertToService(service));
-        }
-        return services;
+        return parserCSV.parseFileServices(fileData);
     }
 }

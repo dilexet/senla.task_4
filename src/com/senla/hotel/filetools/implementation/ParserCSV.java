@@ -1,7 +1,8 @@
 package com.senla.hotel.filetools.implementation;
 
-import com.senla.hotel.dto.RoomDTO;
-import com.senla.hotel.dto.ServiceDTO;
+import com.senla.hotel.entity.Client;
+import com.senla.hotel.entity.Room;
+import com.senla.hotel.entity.Service;
 import com.senla.hotel.filetools.IParserCSV;
 
 import java.util.ArrayList;
@@ -11,49 +12,74 @@ import java.util.List;
 public class ParserCSV implements IParserCSV {
     private final char csvSplitBy;
 
-    public ParserCSV(char csvSplitBy){
+    public ParserCSV(char csvSplitBy) {
         this.csvSplitBy = csvSplitBy;
     }
 
     @Override
-    public List<RoomDTO> parseFileRooms(String fileData) {
+    public List<Room> parseFileRooms(String fileData) throws Exception {
         String[] lines = fileData.split("\n");
-        List<RoomDTO> roomsDTO = new ArrayList<>();
+        List<Room> rooms = new ArrayList<>();
         for (String line : lines) {
             if (!line.equals("")) {
                 String[] values = line.split(String.valueOf(csvSplitBy));
-                roomsDTO.add(convertToRoomDTO(values));
+                rooms.add(convertToRoom(values));
             }
         }
-        return roomsDTO;
+        return rooms;
     }
 
     @Override
-    public List<ServiceDTO> parseFileServices(String fileData) {
+    public List<Service> parseFileServices(String fileData) throws Exception {
         String[] lines = fileData.split("\n");
-        List<ServiceDTO> servicesDTO = new ArrayList<>();
+        List<Service> services = new ArrayList<>();
         for (String line : lines) {
             if (!line.equals("")) {
                 String[] values = line.split(String.valueOf(csvSplitBy));
-                servicesDTO.add(convertToServiceDTO(values));
+                services.add(convertToService(values));
             }
         }
-        return servicesDTO;
+        return services;
     }
 
-    private RoomDTO convertToRoomDTO(String[] values) {
+    @Override
+    public List<Client> parseFileClients(String fileData) throws Exception {
+        String[] lines = fileData.split("\n");
+        List<Client> clients = new ArrayList<>();
+        for (String line : lines) {
+            if (!line.equals("")) {
+                String[] values = line.split(String.valueOf(csvSplitBy));
+                clients.add(convertToClient(values));
+            }
+        }
+        return clients;
+    }
+
+    private Room convertToRoom(String[] values) throws Exception {
+        if (values == null || values[0] == null || values[1] == null || values[2] == null || values[3] == null) {
+            throw new NullPointerException("values is empty");
+        }
+        Room room = new Room(Integer.parseInt(values[1]), Double.parseDouble(values[2]));
+        room.setId(values[0]);
+        room.setClientId((values[3]));
+        return room;
+    }
+
+    private Service convertToService(String[] values) throws Exception {
         if (values == null || values[0] == null || values[1] == null || values[2] == null) {
             throw new NullPointerException("values is empty");
         }
-        RoomDTO roomDTO = new RoomDTO(Integer.parseInt(values[0]), Double.parseDouble(values[1]));
-        roomDTO.setClientName(values[2]);
-        return roomDTO;
+        Service service = new Service(values[1], Double.parseDouble(values[2]));
+        service.setId(values[0]);
+        return service;
     }
 
-    private ServiceDTO convertToServiceDTO(String[] values) {
+    private Client convertToClient(String[] values) throws Exception {
         if (values == null || values[0] == null || values[1] == null) {
             throw new NullPointerException("values is empty");
         }
-        return new ServiceDTO(values[0], Double.parseDouble(values[1]));
+        Client client = new Client(values[1]);
+        client.setId(values[0]);
+        return client;
     }
 }

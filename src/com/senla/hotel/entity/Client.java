@@ -1,16 +1,10 @@
 package com.senla.hotel.entity;
 
 public class Client {
-    private static int id;
+    private String id;
     private final String name;
 
-    public Client() {
-        id++;
-        name = "Client №" + id;
-    }
-
     public Client(String name) {
-        id++;
         this.name = name;
     }
 
@@ -21,8 +15,11 @@ public class Client {
         return name;
     }
 
-    @Override
-    public String toString() {
-        return "\nName: " + name;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 }

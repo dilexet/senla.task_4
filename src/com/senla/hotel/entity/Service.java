@@ -1,6 +1,7 @@
 package com.senla.hotel.entity;
 
 public class Service {
+    private String id;
     private final String serviceName;
     private double price;
 
@@ -10,6 +11,14 @@ public class Service {
             throw new Exception("incorrect price");
         }
         this.price = price;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public void setPrice(double price) throws Exception {
@@ -25,11 +34,5 @@ public class Service {
 
     public double getPrice() {
         return price;
-    }
-
-    @Override
-    public String toString() {
-        return "\nserviceName: " + serviceName +
-                "\nPrice: " + price + "\n";
     }
 }

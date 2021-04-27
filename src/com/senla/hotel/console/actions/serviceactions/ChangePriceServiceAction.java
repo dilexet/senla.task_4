@@ -1,7 +1,7 @@
 package com.senla.hotel.console.actions.serviceactions;
 
 import com.senla.hotel.console.actions.IAction;
-import com.senla.hotel.dto.ServiceDTO;
+import com.senla.hotel.entity.Service;
 import com.senla.hotel.manager.Administrator;
 
 import java.util.Scanner;
@@ -22,8 +22,8 @@ public class ChangePriceServiceAction implements IAction {
         System.out.println("Enter the service new price: ");
         double servicePrice = scanner.nextDouble();
 
-        ServiceDTO serviceDTO = new ServiceDTO(serviceName, servicePrice);
+        Service service = new Service(serviceName, servicePrice);
 
-        System.out.println(administrator.addService(serviceDTO));
+        System.out.println(administrator.changePriceService(service));
     }
 }

@@ -21,9 +21,10 @@ public class SortRoomAction implements IAction {
         System.out.println("1 - Number\n2 - Price");
         int command = new Scanner(System.in).nextInt();
 
+        // TODO: порабоать над выводом списков можно добавить dto
         switch (command) {
-            case 1 -> System.out.println(administrator.sortRoom(Comparator.comparingInt(Room::getNumber)));
-            case 2 -> System.out.println(administrator.sortRoom(Comparator.comparingDouble(Room::getPrice)));
+            case 1 -> System.out.println(administrator.getRooms(Comparator.comparingInt(Room::getNumber)).toString());
+            case 2 -> System.out.println(administrator.getRooms(Comparator.comparingDouble(Room::getPrice)).toString());
             default -> throw new InputMismatchException("Invalid input");
         }
     }

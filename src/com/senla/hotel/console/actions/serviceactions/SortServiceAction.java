@@ -21,6 +21,7 @@ public class SortServiceAction implements IAction {
         System.out.println("1 - Name\n2 - Price");
         int command = new Scanner(System.in).nextInt();
 
+        // TODO: поработать над выводом списков
         switch (command) {
             case 1 -> System.out.println(administrator.sortService(Comparator.comparing(Service::getServiceName)));
             case 2 -> System.out.println(administrator.sortService(Comparator.comparingDouble(Service::getPrice)));

@@ -1,14 +1,16 @@
 package com.senla.hotel.service.implementation;
 
 import com.senla.hotel.dao.IRoomDAO;
-import com.senla.hotel.dto.RoomDTO;
 import com.senla.hotel.entity.Client;
 import com.senla.hotel.entity.Room;
+import com.senla.hotel.entity.Service;
 import com.senla.hotel.enums.Status;
 import com.senla.hotel.service.IRoomManagement;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.TreeSet;
+import java.util.UUID;
 
 public class RoomManagement implements IRoomManagement {
     private final IRoomDAO roomDAO;
@@ -17,21 +19,25 @@ public class RoomManagement implements IRoomManagement {
         this.roomDAO = roomDAO;
     }
 
-    public String sort(Comparator<Room> roomComparator) throws Exception {
+    public TreeSet<Room> getRooms(Comparator<Room> roomComparator) throws Exception {
         TreeSet<Room> roomsSorted = new TreeSet<>(roomComparator);
         roomsSorted.addAll(roomDAO.getRooms());
-        return roomsSorted.toString();
+        return roomsSorted;
     }
 
-    public String accommodateInRoom(Client client) throws Exception {
+    public List<Room> getRooms() throws Exception {
+        return roomDAO.getRooms();
+    }
+
+    public String accommodateInRoom(String clientId) throws Exception {
         var room = roomDAO.getRooms().stream().filter(r -> r.getStatus() == Status.FREE).findFirst();
         if (room.isEmpty()) {
             return "No free room";
         } else {
             room.get().setStatus(Status.BUSY);
-            room.get().setClient(client);
+            room.get().setClientId(clientId);
             roomDAO.update(room.get());
-            return client.getName() + " is checked into room " + room.get().getNumber();
+            return  "Room " + room.get().getNumber() + " is busy";
         }
     }
 
@@ -41,30 +47,30 @@ public class RoomManagement implements IRoomManagement {
             return "Room not found";
         } else {
             room.get().setStatus(Status.FREE);
-            room.get().setClient(null);
+            room.get().setClientId(null);
             roomDAO.update(room.get());
             return "Client was evicted from room " + room.get().getNumber() + ", payable " + room.get().getPrice() + "$";
         }
     }
 
-    public String changePriceRoom(RoomDTO roomDTO) throws Exception {
-        var room = roomDAO.getRooms().stream().filter(r -> r.getNumber() == roomDTO.getNumber()).findFirst();
-        if (room.isEmpty()) {
+    public String changePriceRoom(String id, double newPrice) throws Exception {
+        var rooms = roomDAO.getRooms().stream().filter(r -> r.getId().equals(id)).findFirst();
+        if (rooms.isEmpty()) {
             return "Room not found";
         } else {
-            room.get().setPrice(roomDTO.getPrice());
-            roomDAO.update(room.get());
-            return "The cost of room number " + room.get().getNumber() + " has been changed to " + room.get().getPrice() + "$";
+            rooms.get().setPrice(newPrice);
+            roomDAO.update(rooms.get());
+            return "The cost of room number " + rooms.get().getNumber() + " has been changed to " + rooms.get().getPrice() + "$";
         }
     }
 
-    public String addRoom(RoomDTO roomDTO) throws Exception {
-        var room = roomDAO.getRooms().stream().filter(r -> r.getNumber() == roomDTO.getNumber()).findFirst();
-        if (room.isPresent()) {
+    public String addRoom(Room room) throws Exception {
+        var rooms = roomDAO.getRooms().stream().filter(r -> r.getNumber() == room.getNumber()).findFirst();
+        if (rooms.isPresent()) {
             return "A room with the same number already exists";
         } else {
-            roomDAO.save(new Room(roomDTO.getNumber(), roomDTO.getPrice()));
-            return "Room " + roomDTO.getNumber() + " added successfully";
+            roomDAO.save(room);
+            return "Room " + room.getNumber() + " added successfully";
         }
     }
 }

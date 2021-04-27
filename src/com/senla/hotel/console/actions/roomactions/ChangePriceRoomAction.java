@@ -1,7 +1,7 @@
 package com.senla.hotel.console.actions.roomactions;
 
 import com.senla.hotel.console.actions.IAction;
-import com.senla.hotel.dto.RoomDTO;
+import com.senla.hotel.entity.Room;
 import com.senla.hotel.manager.Administrator;
 
 import java.util.Scanner;
@@ -22,8 +22,8 @@ public class ChangePriceRoomAction implements IAction {
         System.out.println("Enter the room new price: ");
         double roomPrice = scanner.nextDouble();
 
-        RoomDTO roomDTO = new RoomDTO(roomNumber, roomPrice);
+        Room room = new Room(roomNumber, roomPrice);
 
-        System.out.println(administrator.changePriceRoom(roomDTO));
+        System.out.println(administrator.changePriceRoom(room));
     }
 }
