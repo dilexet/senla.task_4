@@ -3,7 +3,7 @@ package com.senla.hotel.tools;
 import java.util.Date;
 
 public class Log {
-    public static LoggerConfiguration Logger;
+    public static Log logger;
 
     public static void Error(String message){
         Date date = new Date();
