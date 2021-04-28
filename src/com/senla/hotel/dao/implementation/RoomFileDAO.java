@@ -54,7 +54,7 @@ public class RoomFileDAO implements IRoomDAO {
 
     @Override
     public List<Room> getRooms(RoomSortingType roomSortingType) throws Exception {
-        String fileData = fileStreamReader.fileRead();
+        var fileData = fileStreamReader.fileRead();
         TreeSet<Room> roomsSorted = switch (roomSortingType) {
             case NON -> new TreeSet<>(Comparator.comparing(Room::getId));
             case NUMBER -> new TreeSet<>(Comparator.comparing(Room::getNumber));

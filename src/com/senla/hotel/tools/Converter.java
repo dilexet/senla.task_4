@@ -8,17 +8,17 @@ import com.senla.hotel.entity.Service;
 
 public class Converter {
 
-    public static RoomDTO convertToDTO(Room room, Client client) throws Exception {
+    public static RoomDTO convertToDTO(Room room, Client client) {
         return new RoomDTO(room.getNumber(), room.getPrice(), room.getStatus(), client);
     }
 
-    public static ServiceDTO convertToDTO(Service service) throws Exception {
+    public static ServiceDTO convertToDTO(Service service) {
         return new ServiceDTO(service.getServiceName(), service.getPrice());
     }
 
     public static String convertToWritableString(Room room) {
 
-        return room.getId() + "," + room.getNumber() + "," + room.getPrice() + "," + room.getClientId() + "\n";
+        return room.getId() + "," + room.getNumber() + "," + room.getPrice() + "," + room.getStatus().toString() + "," + room.getClientId() + "\n";
     }
 
     public static String convertToWritableString(Service service) {

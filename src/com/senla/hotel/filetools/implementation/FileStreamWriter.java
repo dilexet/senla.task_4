@@ -15,7 +15,6 @@ public class FileStreamWriter {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, append))) {
             bw.write(data);
         } catch (IOException ex) {
-
             System.out.println(ex.getMessage());
         }
     }

@@ -44,25 +44,19 @@ public class ClientFileDAO implements IClientFileDAO {
 
     @Override
     public Client getById(String id) throws Exception {
+        if (id == null || id.equals("null") || id.equals("")) {
+            return new Client("");
+        }
         var client = getClients().stream().filter(r -> r.getId().equals(id)).findFirst().orElse(null);
         if (client == null) {
-            throw new Exception("Room not found");
+            throw new Exception("Client not found");
         }
         return client;
     }
 
     @Override
-    public String getIdByName(String name) throws Exception {
-        var client = getClients().stream().filter(r -> r.getName().equals(name)).findFirst().orElse(null);
-        if (client == null) {
-            throw new Exception("Room not found");
-        }
-        return client.getId();
-    }
-
-    @Override
     public List<Client> getClients() throws Exception {
-        String fileData = fileStreamReader.fileRead();
+        var fileData = fileStreamReader.fileRead();
         return parserCSV.parseFileClients(fileData);
     }
 }

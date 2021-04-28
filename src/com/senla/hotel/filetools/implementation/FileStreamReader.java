@@ -11,14 +11,14 @@ public class FileStreamReader {
         this.path = path;
     }
 
-    public String fileRead() throws IOException {
+    public String[] fileRead() throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String s;
             StringBuilder fileData = new StringBuilder();
             while ((s = br.readLine()) != null) {
                 fileData.append(s).append("\n");
             }
-            return fileData.toString();
+            return  fileData.toString().split("\n");
         } catch (IOException ex) {
             throw new IOException(ex.toString());
         }

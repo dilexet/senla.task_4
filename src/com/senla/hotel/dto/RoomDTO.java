@@ -22,7 +22,7 @@ public class RoomDTO {
                 "number=" + number +
                 ", price=" + price +
                 ", status=" + status +
-                ", client=" + client +
+                ", client=" + client.getName() +
                 '}';
     }
 }

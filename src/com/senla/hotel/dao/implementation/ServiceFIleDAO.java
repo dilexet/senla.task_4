@@ -55,7 +55,7 @@ public class ServiceFIleDAO implements IServiceDAO {
 
     @Override
     public List<Service> getServices(ServiceSortingType serviceSortingType) throws Exception {
-        String fileData = fileStreamReader.fileRead();
+        var fileData = fileStreamReader.fileRead();
         TreeSet<Service> servicesSorted = switch (serviceSortingType) {
             case NON -> new TreeSet<>(Comparator.comparing(Service::getId));
             case NAME -> new TreeSet<>(Comparator.comparing(Service::getServiceName));

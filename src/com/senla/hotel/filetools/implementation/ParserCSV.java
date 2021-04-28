@@ -3,6 +3,7 @@ package com.senla.hotel.filetools.implementation;
 import com.senla.hotel.entity.Client;
 import com.senla.hotel.entity.Room;
 import com.senla.hotel.entity.Service;
+import com.senla.hotel.enums.Status;
 import com.senla.hotel.filetools.IParserCSV;
 
 import java.util.ArrayList;
@@ -17,8 +18,7 @@ public class ParserCSV implements IParserCSV {
     }
 
     @Override
-    public List<Room> parseFileRooms(String fileData) throws Exception {
-        String[] lines = fileData.split("\n");
+    public List<Room> parseFileRooms(String[] lines) throws Exception {
         List<Room> rooms = new ArrayList<>();
         for (String line : lines) {
             if (!line.equals("")) {
@@ -29,9 +29,19 @@ public class ParserCSV implements IParserCSV {
         return rooms;
     }
 
+    private Room convertToRoom(String[] values) throws Exception {
+        if (values == null || values[0] == null || values[1] == null || values[2] == null || values[3] == null || values[4] == null) {
+            throw new NullPointerException("values is empty");
+        }
+        Room room = new Room(Integer.parseInt(values[1]), Double.parseDouble(values[2]));
+        room.setId(values[0]);
+        room.setStatus(Status.valueOf(values[3]));
+        room.setClientId((values[4]));
+        return room;
+    }
+
     @Override
-    public List<Service> parseFileServices(String fileData) throws Exception {
-        String[] lines = fileData.split("\n");
+    public List<Service> parseFileServices(String[] lines) throws Exception {
         List<Service> services = new ArrayList<>();
         for (String line : lines) {
             if (!line.equals("")) {
@@ -43,8 +53,7 @@ public class ParserCSV implements IParserCSV {
     }
 
     @Override
-    public List<Client> parseFileClients(String fileData) throws Exception {
-        String[] lines = fileData.split("\n");
+    public List<Client> parseFileClients(String[] lines) {
         List<Client> clients = new ArrayList<>();
         for (String line : lines) {
             if (!line.equals("")) {
@@ -53,16 +62,6 @@ public class ParserCSV implements IParserCSV {
             }
         }
         return clients;
-    }
-
-    private Room convertToRoom(String[] values) throws Exception {
-        if (values == null || values[0] == null || values[1] == null || values[2] == null || values[3] == null) {
-            throw new NullPointerException("values is empty");
-        }
-        Room room = new Room(Integer.parseInt(values[1]), Double.parseDouble(values[2]));
-        room.setId(values[0]);
-        room.setClientId((values[3]));
-        return room;
     }
 
     private Service convertToService(String[] values) throws Exception {
@@ -74,7 +73,7 @@ public class ParserCSV implements IParserCSV {
         return service;
     }
 
-    private Client convertToClient(String[] values) throws Exception {
+    private Client convertToClient(String[] values) {
         if (values == null || values[0] == null || values[1] == null) {
             throw new NullPointerException("values is empty");
         }
