@@ -10,6 +10,8 @@ import com.senla.hotel.manager.Administrator;
 import com.senla.hotel.service.implementation.ClientManagement;
 import com.senla.hotel.service.implementation.RoomManagement;
 import com.senla.hotel.service.implementation.ServiceManagement;
+import com.senla.hotel.tools.Log;
+import com.senla.hotel.tools.LoggerConfiguration;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,6 +19,11 @@ import java.util.Properties;
 
 public class Initializer {
     public Administrator initialize() throws IOException {
+
+        String logFilePath = getProperty("logFilePath");
+        FileStreamWriter logWriter = new FileStreamWriter(logFilePath);
+        Log.Logger = new LoggerConfiguration(logWriter);
+
         String roomsFilePath = getProperty("roomsFilePath");
         String servicesFilePath = getProperty("servicesFilePath");
         String clientFilePath = getProperty("clientFilePath");
