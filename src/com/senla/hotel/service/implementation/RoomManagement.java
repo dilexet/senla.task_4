@@ -1,16 +1,12 @@
 package com.senla.hotel.service.implementation;
 
 import com.senla.hotel.dao.IRoomDAO;
-import com.senla.hotel.entity.Client;
 import com.senla.hotel.entity.Room;
-import com.senla.hotel.entity.Service;
+import com.senla.hotel.enums.RoomSortingType;
 import com.senla.hotel.enums.Status;
 import com.senla.hotel.service.IRoomManagement;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.TreeSet;
-import java.util.UUID;
 
 public class RoomManagement implements IRoomManagement {
     private final IRoomDAO roomDAO;
@@ -19,18 +15,12 @@ public class RoomManagement implements IRoomManagement {
         this.roomDAO = roomDAO;
     }
 
-    public TreeSet<Room> getRooms(Comparator<Room> roomComparator) throws Exception {
-        TreeSet<Room> roomsSorted = new TreeSet<>(roomComparator);
-        roomsSorted.addAll(roomDAO.getRooms());
-        return roomsSorted;
-    }
-
-    public List<Room> getRooms() throws Exception {
-        return roomDAO.getRooms();
+    public List<Room> getRooms(RoomSortingType roomSortingType) throws Exception {
+        return roomDAO.getRooms(roomSortingType);
     }
 
     public String accommodateInRoom(String clientId) throws Exception {
-        var room = roomDAO.getRooms().stream().filter(r -> r.getStatus() == Status.FREE).findFirst();
+        var room = roomDAO.getRooms(RoomSortingType.NON).stream().filter(r -> r.getStatus() == Status.FREE).findFirst();
         if (room.isEmpty()) {
             return "No free room";
         } else {
@@ -42,7 +32,7 @@ public class RoomManagement implements IRoomManagement {
     }
 
     public String checkOutRoom(int number) throws Exception {
-        var room = roomDAO.getRooms().stream().filter(r -> r.getNumber() == number).findFirst();
+        var room = roomDAO.getRooms(RoomSortingType.NON).stream().filter(r -> r.getNumber() == number).findFirst();
         if (room.isEmpty()) {
             return "Room not found";
         } else {
@@ -54,23 +44,27 @@ public class RoomManagement implements IRoomManagement {
     }
 
     public String changePriceRoom(String id, double newPrice) throws Exception {
-        var rooms = roomDAO.getRooms().stream().filter(r -> r.getId().equals(id)).findFirst();
-        if (rooms.isEmpty()) {
+        var rooms = roomDAO.getById(id);
+        if (rooms == null) {
             return "Room not found";
         } else {
-            rooms.get().setPrice(newPrice);
-            roomDAO.update(rooms.get());
-            return "The cost of room number " + rooms.get().getNumber() + " has been changed to " + rooms.get().getPrice() + "$";
+            rooms.setPrice(newPrice);
+            roomDAO.update(rooms);
+            return "The cost of room number " + rooms.getNumber() + " has been changed to " + rooms.getPrice() + "$";
         }
     }
 
     public String addRoom(Room room) throws Exception {
-        var rooms = roomDAO.getRooms().stream().filter(r -> r.getNumber() == room.getNumber()).findFirst();
+        var rooms = roomDAO.getRooms(RoomSortingType.NON).stream().filter(r -> r.getNumber() == room.getNumber()).findFirst();
         if (rooms.isPresent()) {
             return "A room with the same number already exists";
         } else {
             roomDAO.save(room);
             return "Room " + room.getNumber() + " added successfully";
         }
+    }
+
+    public Room getById(String id) throws Exception {
+        return roomDAO.getById(id);
     }
 }

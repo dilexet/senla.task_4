@@ -2,14 +2,13 @@ package com.senla.hotel.dao.implementation;
 
 import com.senla.hotel.dao.IServiceDAO;
 import com.senla.hotel.entity.Service;
+import com.senla.hotel.enums.ServiceSortingType;
 import com.senla.hotel.filetools.IParserCSV;
 import com.senla.hotel.filetools.implementation.FileStreamReader;
 import com.senla.hotel.filetools.implementation.FileStreamWriter;
 import com.senla.hotel.tools.Converter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ServiceFIleDAO implements IServiceDAO {
     private final IParserCSV parserCSV;
@@ -30,7 +29,7 @@ public class ServiceFIleDAO implements IServiceDAO {
 
     @Override
     public void update(Service service) throws Exception {
-        List<Service> services = getServices();
+        List<Service> services = getServices(ServiceSortingType.NON);
         var value = services.stream().filter(s -> s.getServiceName().equals(service.getServiceName())).findFirst().orElse(null);
         if (value == null) {
             throw new Exception("Service with this name was not found");
@@ -46,8 +45,24 @@ public class ServiceFIleDAO implements IServiceDAO {
     }
 
     @Override
-    public List<Service> getServices() throws Exception {
+    public Service getById(String id) throws Exception {
+        var service = getServices(ServiceSortingType.NON).stream().filter(r -> r.getId().equals(id)).findFirst().orElse(null);
+        if (service == null) {
+            throw new Exception("Room not found");
+        }
+        return service;
+    }
+
+    @Override
+    public List<Service> getServices(ServiceSortingType serviceSortingType) throws Exception {
         String fileData = fileStreamReader.fileRead();
-        return parserCSV.parseFileServices(fileData);
+        TreeSet<Service> servicesSorted = switch (serviceSortingType) {
+            case NON -> new TreeSet<>(Comparator.comparing(Service::getId));
+            case NAME -> new TreeSet<>(Comparator.comparing(Service::getServiceName));
+            case PRICE -> new TreeSet<>(Comparator.comparing(Service::getPrice));
+        };
+        var services = parserCSV.parseFileServices(fileData);
+        servicesSorted.addAll(services);
+        return new ArrayList<>(servicesSorted);
     }
 }

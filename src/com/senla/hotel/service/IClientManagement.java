@@ -7,7 +7,7 @@ import java.util.List;
 public interface IClientManagement {
     void addClient(Client client) throws Exception;
 
-    Client getClientById(String id) throws Exception;
+    Client getById(String id) throws Exception;
 
     List<Client> getClients() throws Exception;
 }

@@ -13,8 +13,8 @@ public class Main {
     public static void main(String[] args) {
         try {
             Administrator administrator = new Initializer().initialize();
-        MenuController menu = new MenuController(new Builder(administrator), new Navigator());
-        menu.run();
+            MenuController menu = new MenuController(new Builder(administrator), new Navigator());
+            menu.run();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

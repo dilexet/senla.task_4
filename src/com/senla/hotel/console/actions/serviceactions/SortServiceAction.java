@@ -1,10 +1,9 @@
 package com.senla.hotel.console.actions.serviceactions;
 
 import com.senla.hotel.console.actions.IAction;
-import com.senla.hotel.entity.Service;
+import com.senla.hotel.enums.ServiceSortingType;
 import com.senla.hotel.manager.Administrator;
 
-import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -18,13 +17,28 @@ public class SortServiceAction implements IAction {
     @Override
     public void execute() throws Exception {
         System.out.println("Enter the sorting type: ");
-        System.out.println("1 - Name\n2 - Price");
+        System.out.println("0 - Do not sort\n1 - Name\n2 - Price");
         int command = new Scanner(System.in).nextInt();
 
-        // TODO: поработать над выводом списков
         switch (command) {
-            case 1 -> System.out.println(administrator.sortService(Comparator.comparing(Service::getServiceName)));
-            case 2 -> System.out.println(administrator.sortService(Comparator.comparingDouble(Service::getPrice)));
+            case 0 -> {
+                var services = administrator.sortServices(ServiceSortingType.NON);
+                for (var service : services) {
+                    System.out.println(administrator.getServiceDetails(service.getId()).toString());
+                }
+            }
+            case 1 -> {
+                var services = administrator.sortServices(ServiceSortingType.NAME);
+                for (var service : services) {
+                    System.out.println(administrator.getServiceDetails(service.getId()).toString());
+                }
+            }
+            case 2 -> {
+                var services = administrator.sortServices(ServiceSortingType.PRICE);
+                for (var service : services) {
+                    System.out.println(administrator.getServiceDetails(service.getId()).toString());
+                }
+            }
             default -> throw new InputMismatchException("Invalid input");
         }
     }

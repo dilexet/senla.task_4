@@ -1,16 +1,14 @@
 package com.senla.hotel.service;
 
-import com.senla.hotel.entity.Client;
 import com.senla.hotel.entity.Room;
-import com.senla.hotel.entity.Service;
+import com.senla.hotel.enums.RoomSortingType;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
 public interface IRoomManagement {
-    TreeSet<Room> getRooms(Comparator<Room> roomComparator) throws Exception;
-    List<Room> getRooms() throws Exception;
+    List<Room> getRooms(RoomSortingType roomSortingType) throws Exception;
 
     String accommodateInRoom(String clientId) throws Exception;
 
@@ -19,4 +17,6 @@ public interface IRoomManagement {
     String changePriceRoom(String id, double newPrice) throws Exception;
 
     String addRoom(Room room) throws Exception;
+
+    Room getById(String id) throws Exception;
 }

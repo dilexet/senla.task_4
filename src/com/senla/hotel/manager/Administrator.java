@@ -1,15 +1,18 @@
 package com.senla.hotel.manager;
 
-import com.senla.hotel.dao.IClientFileDAO;
+import com.senla.hotel.dto.RoomDTO;
+import com.senla.hotel.dto.ServiceDTO;
 import com.senla.hotel.entity.Client;
 import com.senla.hotel.entity.Room;
 import com.senla.hotel.entity.Service;
+import com.senla.hotel.enums.RoomSortingType;
+import com.senla.hotel.enums.ServiceSortingType;
 import com.senla.hotel.service.IClientManagement;
 import com.senla.hotel.service.IRoomManagement;
 import com.senla.hotel.service.IServiceManagement;
+import com.senla.hotel.tools.Converter;
 
-import java.util.Comparator;
-import java.util.TreeSet;
+import java.util.List;
 
 public class Administrator {
     private final IRoomManagement roomManagement;
@@ -22,12 +25,12 @@ public class Administrator {
         this.clientManagement = clientManagement;
     }
 
-    public TreeSet<Room> getRooms(Comparator<Room> roomComparator) throws Exception {
-        return roomManagement.getRooms(roomComparator);
+    public List<Room> getRooms(RoomSortingType roomSortingType) throws Exception {
+        return roomManagement.getRooms(roomSortingType);
     }
 
-    public TreeSet<Service> sortService(Comparator<Service> serviceComparator) throws Exception {
-        return serviceManagement.sort(serviceComparator);
+    public List<Service> sortServices(ServiceSortingType serviceSortingType) throws Exception {
+        return serviceManagement.getServices(serviceSortingType);
     }
 
     public String accommodateInRoom(Client client) throws Exception {
@@ -53,5 +56,17 @@ public class Administrator {
 
     public String addService(Service service) throws Exception {
         return serviceManagement.addService(service);
+    }
+
+    public RoomDTO getRoomDetails(String id) throws Exception {
+        var room = roomManagement.getById(id);
+        var client = clientManagement.getById(room.getClientId());
+
+        return Converter.convertToDTO(room, client);
+    }
+
+    public ServiceDTO getServiceDetails(String id) throws Exception {
+        var service = serviceManagement.getById(id);
+        return Converter.convertToDTO(service);
     }
 }

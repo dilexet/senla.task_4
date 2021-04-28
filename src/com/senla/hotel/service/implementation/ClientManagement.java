@@ -18,7 +18,7 @@ public class ClientManagement implements IClientManagement {
         clientFileDAO.saveOrUpdate(client);
     }
 
-    public Client getClientById(String id) throws Exception {
+    public Client getById(String id) throws Exception {
        return clientFileDAO.getById(id);
     }
 
