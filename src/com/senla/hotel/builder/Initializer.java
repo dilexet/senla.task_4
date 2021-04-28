@@ -22,7 +22,7 @@ public class Initializer {
 
         String logFilePath = getProperty("logFilePath");
         FileStreamWriter logWriter = new FileStreamWriter(logFilePath);
-        Log.Logger = new LoggerConfiguration(logWriter);
+        Log.Logger = new Log(logWriter);
 
         String roomsFilePath = getProperty("roomsFilePath");
         String servicesFilePath = getProperty("servicesFilePath");
