@@ -4,6 +4,20 @@ import java.util.Date;
 
 public class Log {
     public static Log logger;
+    
+    private final FileStreamWriter fileStreamWriter;
+
+    public Log(FileStreamWriter fileStreamWriter){
+
+        this.fileStreamWriter = fileStreamWriter;
+
+    }
+
+    public FileStreamWriter getFileStreamWriter() {
+
+        return fileStreamWriter;
+
+    }
 
     public static void Error(String message){
         Date date = new Date();
