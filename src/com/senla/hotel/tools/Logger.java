@@ -19,7 +19,7 @@ public class Logger {
         try {
             fileStreamWriter.fileWrite(Properties.getInstance().getProperty("logFilePath"), str, true);
         } catch (IOException e) {
-            Logger.Error(e.getMessage());
+            System.out.println(e.getMessage());
         }
         System.out.println(str);
     }
@@ -35,7 +35,7 @@ public class Logger {
         try {
             fileStreamWriter.fileWrite(Properties.getInstance().getProperty("logFilePath"), str, true);
         } catch (IOException e) {
-            Logger.Error(e.getMessage());
+            System.out.println(e.getMessage());
         }
         System.out.println(str);
     }
