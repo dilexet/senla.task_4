@@ -10,34 +10,41 @@ import com.senla.hotel.manager.Administrator;
 import com.senla.hotel.service.implementation.ClientManagement;
 import com.senla.hotel.service.implementation.RoomManagement;
 import com.senla.hotel.service.implementation.ServiceManagement;
-import com.senla.hotel.tools.Properties;
+import com.senla.hotel.tools.Log;
+import com.senla.hotel.tools.LoggerConfiguration;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-
+import java.util.Properties;
 
 public class Initializer {
     public Administrator initialize() throws IOException {
-        FileStreamWriter fileStreamWriter = new FileStreamWriter();
-        FileStreamReader fileStreamReader = new FileStreamReader();
 
-        char cvsSplitBy = Properties.getInstance().getProperty("cvsSplitBy").charAt(1);
+        String logFilePath = getProperty("logFilePath");
+        FileStreamWriter logWriter = new FileStreamWriter(logFilePath);
+        Log.Logger = new Log(logWriter);
+
+        String roomsFilePath = getProperty("roomsFilePath");
+        String servicesFilePath = getProperty("servicesFilePath");
+        String clientFilePath = getProperty("clientFilePath");
+        char cvsSplitBy = getProperty("cvsSplitBy").charAt(1);
 
         ParserCSV parserCSV = new ParserCSV(cvsSplitBy);
 
         RoomFileDAO roomFileDAO = new RoomFileDAO(
                 parserCSV,
-                fileStreamWriter,
-                fileStreamReader);
+                new FileStreamWriter(roomsFilePath),
+                new FileStreamReader(roomsFilePath));
 
         ServiceFIleDAO serviceFIleDAO = new ServiceFIleDAO(
                 parserCSV,
-                fileStreamWriter,
-                fileStreamReader);
+                new FileStreamWriter(servicesFilePath),
+                new FileStreamReader(servicesFilePath));
 
         ClientFileDAO clientFileDAO = new ClientFileDAO(
                 parserCSV,
-                fileStreamWriter,
-                fileStreamReader);
+                new FileStreamWriter(clientFilePath),
+                new FileStreamReader(clientFilePath));
 
         RoomManagement roomManagement = new RoomManagement(roomFileDAO);
         ServiceManagement serviceManagement = new ServiceManagement(serviceFIleDAO);
@@ -45,5 +52,17 @@ public class Initializer {
         return new Administrator(roomManagement, serviceManagement, clientManagement);
     }
 
-
+    private String getProperty(String propertyName) throws IOException {
+        Properties props = new Properties();
+        try {
+            props.load(new FileInputStream("files.properties"));
+        } catch (IOException e) {
+            throw new IOException(e.toString());
+        }
+        String property = props.getProperty(propertyName);
+        if (property == null) {
+            throw new IOException("Property not found");
+        }
+        return property;
+    }
 }
