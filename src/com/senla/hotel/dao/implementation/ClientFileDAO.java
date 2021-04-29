@@ -6,6 +6,7 @@ import com.senla.hotel.filetools.IParserCSV;
 import com.senla.hotel.filetools.implementation.FileStreamReader;
 import com.senla.hotel.filetools.implementation.FileStreamWriter;
 import com.senla.hotel.tools.Converter;
+import com.senla.hotel.tools.Properties;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,10 +36,10 @@ public class ClientFileDAO implements IClientFileDAO {
             for (var item : clients) {
                 data.append(Converter.convertToWritableString(item));
             }
-            fileStreamWriter.fileWrite(data.toString(), false);
+            fileStreamWriter.fileWrite(Properties.getInstance().getProperty("clientFilePath"), data.toString(), false);
         } else {
             client.setId(UUID.randomUUID().toString());
-            fileStreamWriter.fileWrite(Converter.convertToWritableString(client), true);
+            fileStreamWriter.fileWrite(Properties.getInstance().getProperty("clientFilePath"), Converter.convertToWritableString(client), true);
         }
     }
 
@@ -56,7 +57,7 @@ public class ClientFileDAO implements IClientFileDAO {
 
     @Override
     public List<Client> getClients() throws Exception {
-        var fileData = fileStreamReader.fileRead();
+        var fileData = fileStreamReader.fileRead(Properties.getInstance().getProperty("clientFilePath"));
         return parserCSV.parseFileClients(fileData);
     }
 }

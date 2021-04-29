@@ -17,6 +17,6 @@ public class CheckOutRoomAction implements IAction {
         System.out.println("Enter the room number: ");
         int roomNumber = new Scanner(System.in).nextInt();
 
-        System.out.println(administrator.checkOutRoom(roomNumber));
+        administrator.checkOutRoom(roomNumber);
     }
 }

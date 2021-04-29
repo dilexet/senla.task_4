@@ -24,6 +24,6 @@ public class ChangePriceServiceAction implements IAction {
 
         Service service = new Service(serviceName, servicePrice);
 
-        System.out.println(administrator.changePriceService(service));
+        administrator.changePriceService(service);
     }
 }

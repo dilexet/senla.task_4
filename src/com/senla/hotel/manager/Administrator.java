@@ -11,6 +11,7 @@ import com.senla.hotel.service.IClientManagement;
 import com.senla.hotel.service.IRoomManagement;
 import com.senla.hotel.service.IServiceManagement;
 import com.senla.hotel.tools.Converter;
+import com.senla.hotel.tools.Logger;
 
 import java.util.List;
 
@@ -33,29 +34,29 @@ public class Administrator {
         return serviceManagement.getServices(serviceSortingType);
     }
 
-    public String accommodateInRoom(Client client) throws Exception {
+    public void accommodateInRoom(Client client) throws Exception {
         clientManagement.addClient(client);
-        return roomManagement.accommodateInRoom(client.getId());
+        Logger.Info(roomManagement.accommodateInRoom(client.getId()));
     }
 
-    public String checkOutRoom(int number) throws Exception {
-        return roomManagement.checkOutRoom(number);
+    public void checkOutRoom(int number) throws Exception {
+        Logger.Info(roomManagement.checkOutRoom(number));
     }
 
-    public String changePriceRoom(Room room) throws Exception {
-        return roomManagement.changePriceRoom(room.getId(), room.getPrice());
+    public void changePriceRoom(Room room) throws Exception {
+        Logger.Info(roomManagement.changePriceRoom(room.getId(), room.getPrice()));
     }
 
-    public String changePriceService(Service service) throws Exception {
-        return serviceManagement.changePriceService(service.getId(), service.getPrice());
+    public void changePriceService(Service service) throws Exception {
+        Logger.Info(serviceManagement.changePriceService(service.getId(), service.getPrice()));
     }
 
-    public String addRoom(Room room) throws Exception {
-        return roomManagement.addRoom(room);
+    public void addRoom(Room room) throws Exception {
+        Logger.Info(roomManagement.addRoom(room));
     }
 
-    public String addService(Service service) throws Exception {
-        return serviceManagement.addService(service);
+    public void addService(Service service) throws Exception {
+        Logger.Info(serviceManagement.addService(service));
     }
 
     public RoomDTO getRoomDetails(String id) throws Exception {

@@ -1,21 +1,18 @@
 package com.senla.hotel.filetools.implementation;
 
+import com.senla.hotel.tools.Logger;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileStreamWriter {
-    private final String path;
 
-    public FileStreamWriter(String path) {
-        this.path = path;
-    }
-
-    public void fileWrite(String data, boolean append) {
+    public void fileWrite(String path, String data, boolean append) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, append))) {
             bw.write(data);
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            Logger.Error(ex.getMessage());
         }
     }
 }

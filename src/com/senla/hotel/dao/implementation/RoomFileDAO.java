@@ -7,6 +7,7 @@ import com.senla.hotel.filetools.IParserCSV;
 import com.senla.hotel.filetools.implementation.FileStreamReader;
 import com.senla.hotel.filetools.implementation.FileStreamWriter;
 import com.senla.hotel.tools.Converter;
+import com.senla.hotel.tools.Properties;
 
 import java.util.*;
 
@@ -22,30 +23,30 @@ public class RoomFileDAO implements IRoomDAO {
     }
 
     @Override
-    public void save(Room room) {
-        room.setId(UUID.randomUUID().toString());
-        fileStreamWriter.fileWrite(Converter.convertToWritableString(room), true);
-    }
-
-    @Override
-    public void update(Room room) throws Exception {
-        List<Room> rooms = getRooms(RoomSortingType.NON);
-        var value = rooms.stream().filter(s -> s.getNumber() == room.getNumber()).findFirst().orElse(null);
-        if (value == null) {
-            throw new Exception("Room with this number was not found");
+    public void saveOrUpdate(Room room) throws Exception {
+        if(room.getId() != null){
+            List<Room> rooms = getRooms(RoomSortingType.NONE);
+            var value = rooms.stream().filter(s -> s.getNumber() == room.getNumber()).findFirst().orElse(null);
+            if (value == null) {
+                throw new Exception("Room with this number was not found");
+            }
+            var index = rooms.indexOf(value);
+            rooms.set(index, room);
+            StringBuilder data = new StringBuilder();
+            for (var item : rooms) {
+                data.append(Converter.convertToWritableString(item));
+            }
+            fileStreamWriter.fileWrite(Properties.getInstance().getProperty("roomsFilePath"), data.toString(), false);
         }
-        var index = rooms.indexOf(value);
-        rooms.set(index, room);
-        StringBuilder data = new StringBuilder();
-        for (var item : rooms) {
-            data.append(Converter.convertToWritableString(item));
+        else{
+            room.setId(UUID.randomUUID().toString());
+            fileStreamWriter.fileWrite(Properties.getInstance().getProperty("roomsFilePath"), Converter.convertToWritableString(room), true);
         }
-        fileStreamWriter.fileWrite(data.toString(), false);
     }
 
     @Override
     public Room getById(String id) throws Exception {
-        var room = getRooms(RoomSortingType.NON).stream().filter(r -> r.getId().equals(id)).findFirst().orElse(null);
+        var room = getRooms(RoomSortingType.NONE).stream().filter(r -> r.getId().equals(id)).findFirst().orElse(null);
         if (room == null) {
             throw new Exception("Room not found");
         }
@@ -54,9 +55,9 @@ public class RoomFileDAO implements IRoomDAO {
 
     @Override
     public List<Room> getRooms(RoomSortingType roomSortingType) throws Exception {
-        var fileData = fileStreamReader.fileRead();
+        var fileData = fileStreamReader.fileRead(Properties.getInstance().getProperty("roomsFilePath"));
         TreeSet<Room> roomsSorted = switch (roomSortingType) {
-            case NON -> new TreeSet<>(Comparator.comparing(Room::getId));
+            case NONE -> new TreeSet<>(Comparator.comparing(Room::getId));
             case NUMBER -> new TreeSet<>(Comparator.comparing(Room::getNumber));
             case PRICE -> new TreeSet<>(Comparator.comparing(Room::getPrice));
             case STATUS -> new TreeSet<>(Comparator.comparing(Room::getStatus));

@@ -20,25 +20,25 @@ public class RoomManagement implements IRoomManagement {
     }
 
     public String accommodateInRoom(String clientId) throws Exception {
-        var room = roomDAO.getRooms(RoomSortingType.NON).stream().filter(r -> r.getStatus() == Status.FREE).findFirst();
+        var room = roomDAO.getRooms(RoomSortingType.NONE).stream().filter(r -> r.getStatus() == Status.FREE).findFirst();
         if (room.isEmpty()) {
             return "No free room";
         } else {
             room.get().setStatus(Status.BUSY);
             room.get().setClientId(clientId);
-            roomDAO.update(room.get());
+            roomDAO.saveOrUpdate(room.get());
             return  "Room " + room.get().getNumber() + " is busy";
         }
     }
 
     public String checkOutRoom(int number) throws Exception {
-        var room = roomDAO.getRooms(RoomSortingType.NON).stream().filter(r -> r.getNumber() == number).findFirst();
+        var room = roomDAO.getRooms(RoomSortingType.NONE).stream().filter(r -> r.getNumber() == number).findFirst();
         if (room.isEmpty()) {
             return "Room not found";
         } else {
             room.get().setStatus(Status.FREE);
             room.get().setClientId(null);
-            roomDAO.update(room.get());
+            roomDAO.saveOrUpdate(room.get());
             return "Client was evicted from room " + room.get().getNumber() + ", payable " + room.get().getPrice() + "$";
         }
     }
@@ -49,17 +49,17 @@ public class RoomManagement implements IRoomManagement {
             return "Room not found";
         } else {
             rooms.setPrice(newPrice);
-            roomDAO.update(rooms);
+            roomDAO.saveOrUpdate(rooms);
             return "The cost of room number " + rooms.getNumber() + " has been changed to " + rooms.getPrice() + "$";
         }
     }
 
     public String addRoom(Room room) throws Exception {
-        var rooms = roomDAO.getRooms(RoomSortingType.NON).stream().filter(r -> r.getNumber() == room.getNumber()).findFirst();
+        var rooms = roomDAO.getRooms(RoomSortingType.NONE).stream().filter(r -> r.getNumber() == room.getNumber()).findFirst();
         if (rooms.isPresent()) {
             return "A room with the same number already exists";
         } else {
-            roomDAO.save(room);
+            roomDAO.saveOrUpdate(room);
             return "Room " + room.getNumber() + " added successfully";
         }
     }

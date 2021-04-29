@@ -1,17 +1,13 @@
 package com.senla.hotel.filetools.implementation;
 
+import com.senla.hotel.tools.Logger;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class FileStreamReader {
-    private final String path;
-
-    public FileStreamReader(String path) {
-        this.path = path;
-    }
-
-    public String[] fileRead() throws IOException {
+    public String[] fileRead(String path) {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String s;
             StringBuilder fileData = new StringBuilder();
@@ -20,7 +16,8 @@ public class FileStreamReader {
             }
             return  fileData.toString().split("\n");
         } catch (IOException ex) {
-            throw new IOException(ex.toString());
+            Logger.Error(ex.toString());
+            return null;
         }
     }
 }

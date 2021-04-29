@@ -1,7 +1,7 @@
 package com.senla.hotel.enums;
 
 public enum ServiceSortingType {
-    NON,
+    NONE,
     NAME,
     PRICE
 }

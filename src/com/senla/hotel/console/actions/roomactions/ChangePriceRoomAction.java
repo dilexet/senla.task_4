@@ -24,6 +24,6 @@ public class ChangePriceRoomAction implements IAction {
 
         Room room = new Room(roomNumber, roomPrice);
 
-        System.out.println(administrator.changePriceRoom(room));
+        administrator.changePriceRoom(room);
     }
 }

@@ -24,6 +24,6 @@ public class AddServiceAction implements IAction {
 
         Service service = new Service(serviceName, servicePrice);
 
-        System.out.println(administrator.addService(service));
+        administrator.addService(service);
     }
 }

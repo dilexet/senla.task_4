@@ -22,7 +22,7 @@ public class SortServiceAction implements IAction {
 
         switch (command) {
             case 0 -> {
-                var services = administrator.sortServices(ServiceSortingType.NON);
+                var services = administrator.sortServices(ServiceSortingType.NONE);
                 for (var service : services) {
                     System.out.println(administrator.getServiceDetails(service.getId()).toString());
                 }

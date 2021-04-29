@@ -24,6 +24,6 @@ public class AddRoomAction implements IAction {
 
         Room room = new Room(roomNumber, roomPrice);
 
-        System.out.println(administrator.addRoom(room));
+        administrator.addRoom(room);
     }
 }

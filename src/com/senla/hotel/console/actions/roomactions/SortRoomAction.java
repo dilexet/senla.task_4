@@ -1,11 +1,9 @@
 package com.senla.hotel.console.actions.roomactions;
 
 import com.senla.hotel.console.actions.IAction;
-import com.senla.hotel.entity.Room;
 import com.senla.hotel.enums.RoomSortingType;
 import com.senla.hotel.manager.Administrator;
 
-import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -24,7 +22,7 @@ public class SortRoomAction implements IAction {
 
         switch (command) {
             case 0 -> {
-                var rooms = administrator.getRooms(RoomSortingType.NON);
+                var rooms = administrator.getRooms(RoomSortingType.NONE);
                 for (var room : rooms) {
                     System.out.println(administrator.getRoomDetails(room.getId()).toString());
                 }

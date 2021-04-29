@@ -2,10 +2,9 @@ package com.senla.hotel.console.menu;
 
 import com.senla.hotel.console.Builder;
 import com.senla.hotel.console.Navigator;
+import com.senla.hotel.tools.Logger;
 
-import java.io.IOException;
 import java.util.Scanner;
-import java.util.InputMismatchException;
 
 public class MenuController {
 
@@ -23,15 +22,12 @@ public class MenuController {
         navigator.printMenu();
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            int choice = scanner.nextInt();
             try {
-                int choice = scanner.nextInt();
                 navigator.navigate(choice);
-            }
-            catch (InputMismatchException | IOException ex){
-                System.out.println(ex.getMessage());
-                break;
             } catch (Exception e) {
-                e.printStackTrace();
+                Logger.Error(e.getMessage());
+                break;
             }
         }
     }

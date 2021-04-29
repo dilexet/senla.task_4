@@ -20,6 +20,6 @@ public class AccommodateInRoomAction implements IAction {
 
         Client client = new Client(clientName);
 
-        System.out.println(administrator.accommodateInRoom(client));
+        administrator.accommodateInRoom(client);
     }
 }
